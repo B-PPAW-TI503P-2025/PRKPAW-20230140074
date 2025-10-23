@@ -11,4 +11,4 @@ presensi/check-out jika belum melakukan check-in
 ![alt text](<ss/presensicheck-out jika belum melakukan check-in.png>)
 
 reports/daily
-![alt text](ss/reportsdaily.png)
+![alt text](Tugas/ss/reportsdaily.png)
