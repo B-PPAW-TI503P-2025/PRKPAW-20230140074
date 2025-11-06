@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// Data sementara
 let books = [
   { id: 1, title: 'Book 1', author: 'Author 1' },
   { id: 2, title: 'Book 2', author: 'Author 2' }
@@ -19,43 +18,43 @@ router.get('/:id', (req, res) => {
   res.json(book);
 });
 
-// POST tambah buku
+// POST tambah buku baru
 router.post('/', (req, res) => {
   const { title, author } = req.body;
-  if (!title || !author)
+  if (!title || !author) {
     return res.status(400).json({ message: 'Title and author are required' });
-
-  const newBook = { id: books.length + 1, title, author };
-  books.push(newBook);
-  res.status(201).json(newBook);
+  }
+  const book = {
+    id: books.length ? books[books.length - 1].id + 1 : 1,
+    title,
+    author
+  };
+  books.push(book);
+  res.status(201).json(book);
 });
 
-// PUT update buku
+// PUT update buku berdasarkan ID
 router.put('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
   const { title, author } = req.body;
-  const index = books.findIndex(b => b.id === id);
-
-  if (index === -1)
+  const book = books.find(b => b.id === parseInt(req.params.id));
+  if (!book) {
     return res.status(404).json({ message: 'Book not found' });
+  }
+  // update field-nya
+  if (title) book.title = title;
+  if (author) book.author = author;
 
-  if (!title || !author)
-    return res.status(400).json({ message: 'Title and author are required' });
-
-  books[index] = { id, title, author };
-  res.json(books[index]);
+  res.json(book);
 });
 
-// DELETE hapus buku
+// DELETE hapus buku berdasarkan ID
 router.delete('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = books.findIndex(b => b.id === id);
-
-  if (index === -1)
+  const bookIndex = books.findIndex(b => b.id === parseInt(req.params.id));
+  if (bookIndex === -1) {
     return res.status(404).json({ message: 'Book not found' });
-
-  books.splice(index, 1);
-  res.status(200).json({ message: 'Book deleted successfully' });
+  }
+  books.splice(bookIndex, 1);
+  res.json({ message: 'Book deleted successfully' });
 });
 
 module.exports = router;
