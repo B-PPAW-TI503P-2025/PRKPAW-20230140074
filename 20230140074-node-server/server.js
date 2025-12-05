@@ -7,6 +7,10 @@ const ruteBuku = require('./routes/books');
 const presensiRoutes = require("./routes/presensi");
 const reportRoutes = require("./routes/reports");
 const authRoutes = require('./routes/auth');
+const path = require('path'); 
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
  
  // Middleware
 app.use(cors());
